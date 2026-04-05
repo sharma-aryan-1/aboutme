@@ -6,7 +6,6 @@ import Experience from "@/components/sections/Experience";
 import Publications from "@/components/sections/Publications";
 import Skills from "@/components/sections/Skills";
 import Education from "@/components/sections/Education";
-import Awards from "@/components/sections/Awards";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
@@ -20,7 +19,6 @@ export default function Home() {
       <Publications />
       <Skills />
       <Education />
-      <Awards />
       <Contact />
     </>
   );

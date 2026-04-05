@@ -7,9 +7,9 @@ export interface Award {
 
 export const awards: Award[] = [
   {
-    title: "Chess",
-    issuer: "NeurIPS 2025",
-    year: 2025,
+    title: "District-Level Gold Medalist, International Mathematics Olympiad",
+    issuer: "Science Olympiad Foundation",
+    year: 2015,
     description:
       "Recognized for novel contributions to adaptive differential privacy in federated learning.",
   },
