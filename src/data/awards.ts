@@ -7,7 +7,7 @@ export interface Award {
 
 export const awards: Award[] = [
   {
-    title: "Best Paper Award — NeurIPS FL Workshop",
+    title: "Chess",
     issuer: "NeurIPS 2025",
     year: 2025,
     description:
