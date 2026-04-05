@@ -1,2 +1,2 @@
 ## Personal Page
-Just a little about me!
+Find out more about me!
