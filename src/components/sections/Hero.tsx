@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, ScholarIcon } from "@/components/ui/BrandIcons";
 import { siteConfig } from "@/data/siteConfig";
+import { withAssetBase } from "@/lib/assetPath";
 
 const socialLinks = [
   { icon: GithubIcon, href: siteConfig.github, label: "GitHub" },
@@ -105,7 +106,7 @@ export default function Hero() {
               ))}
               <span className="mx-2 w-px h-5 bg-border" />
               <a
-                href={siteConfig.resumeUrl}
+                href={withAssetBase(siteConfig.resumeUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm text-text-secondary hover:text-accent transition-colors"

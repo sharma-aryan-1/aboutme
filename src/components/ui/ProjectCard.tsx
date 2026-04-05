@@ -7,6 +7,7 @@ import { GithubIcon } from "@/components/ui/BrandIcons";
 import type { Project } from "@/data/projects";
 import Link from "next/link";
 import Image from "next/image";
+import { withAssetBase } from "@/lib/assetPath";
 
 const categoryColors: Record<string, string> = {
   "ML/DL": "bg-purple-500/15 text-purple-400 border-purple-500/20",
@@ -45,10 +46,10 @@ export default function ProjectCard({ project, index, featured = false }: Projec
           <div className="relative overflow-hidden rounded-xl border border-border bg-surface hover:border-accent/30 transition-all duration-300">
             <div className="grid md:grid-cols-2 gap-0">
               {/* Visual area */}
-              <div className={`relative h-48 md:h-auto min-h-[200px] bg-gradient-to-br ${categoryGradients[project.category] || categoryGradients["ML/AI"]} overflow-hidden`}>
+              <div className={`relative h-48 md:h-auto min-h-[200px] bg-gradient-to-br ${categoryGradients[project.category] || categoryGradients["ML/DL"]} overflow-hidden`}>
                 {hasImage ? (
                   <Image
-                    src={project.image}
+                    src={withAssetBase(project.image)}
                     alt={project.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"

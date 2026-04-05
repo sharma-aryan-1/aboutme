@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import type { Project } from "@/data/projects";
+import { withAssetBase } from "@/lib/assetPath";
 
 const categoryGradients: Record<string, string> = {
   "ML/DL": "from-purple-500/20 via-violet-500/10 to-transparent",
@@ -116,11 +117,11 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className={`relative rounded-xl bg-gradient-to-br ${categoryGradients[project.category] || categoryGradients["ML/AI"]} border border-border overflow-hidden mb-10 ${hasImage ? "" : "h-48 sm:h-64"}`}
+          className={`relative rounded-xl bg-gradient-to-br ${categoryGradients[project.category] || categoryGradients["ML/DL"]} border border-border overflow-hidden mb-10 ${hasImage ? "" : "h-48 sm:h-64"}`}
         >
           {hasImage ? (
             <Image
-              src={project.image}
+              src={withAssetBase(project.image)}
               alt={project.title}
               width={1200}
               height={800}

@@ -29,7 +29,9 @@ jobs:
 
       - name: Build
         env:
-          NEXT_PUBLIC_BASE_PATH: ""
+          # Must match GitHub Pages URL path: …github.io/<repo>/
+          # For a root user site (username.github.io repo), set this to "" in the workflow.
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
