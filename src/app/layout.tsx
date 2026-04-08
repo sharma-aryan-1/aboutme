@@ -8,6 +8,21 @@ import AmbientBackground from "@/components/layout/AmbientBackground";
 import { siteConfig } from "@/data/siteConfig";
 import "./globals.css";
 
+function getMetadataBase(): URL | undefined {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return undefined;
+  try {
+    const normalized = raw.endsWith("/") ? raw : `${raw}/`;
+    return new URL(normalized);
+  } catch {
+    return undefined;
+  }
+}
+
+const siteDescription = `Personal portfolio of ${siteConfig.name}. ${siteConfig.subtitle}. ${siteConfig.tagline}.`;
+const metadataBase = getMetadataBase();
+const ogImageRelative = metadataBase ? "og.svg" : "/og.svg";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,8 +40,30 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase,
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
-  description: `Personal portfolio of ${siteConfig.name}. ${siteConfig.subtitle}. ${siteConfig.tagline}.`,
+  description: siteDescription,
+  openGraph: {
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteDescription,
+    type: "website",
+    locale: "en_US",
+    siteName: siteConfig.name,
+    images: [
+      {
+        url: ogImageRelative,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteDescription,
+    images: [ogImageRelative],
+  },
 };
 
 export default function RootLayout({
@@ -43,6 +80,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeProvider>
           <AmbientBackground />
+          <div
+            className="noise-overlay pointer-events-none fixed inset-0 z-[5]"
+            aria-hidden
+          />
           <Navbar />
           <main className="relative z-10">{children}</main>
           <Footer className="relative z-10" />

@@ -39,6 +39,7 @@ export default function Awards() {
                     {award.year}
                   </span>
                 </div>
+                <p className="text-xs text-text-secondary/90 mt-0.5">{award.issuer}</p>
                 {award.description && (
                   <p className="text-xs text-text-secondary mt-0.5">
                     {award.description}

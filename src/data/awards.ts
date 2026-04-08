@@ -11,7 +11,7 @@ export const awards: Award[] = [
     issuer: "Science Olympiad Foundation",
     year: 2015,
     description:
-      "Recognized for novel contributions to adaptive differential privacy in federated learning.",
+      "Gold medal at the district level in SOF’s International Mathematics Olympiad.",
   },
   {
     title: "Dean's Fellowship",
@@ -22,16 +22,16 @@ export const awards: Award[] = [
   },
   {
     title: "Outstanding Senior Thesis Award",
-    issuer: "State University CS Department",
+    issuer: "VIT Vellore, CSE",
     year: 2022,
     description:
-      "Awarded for undergraduate thesis on sentiment analysis using transformer models.",
+      "Undergraduate thesis on sentiment analysis using transformer models.",
   },
   {
     title: "1st Place — HackML 2023",
     issuer: "MLH / Google",
     year: 2023,
     description:
-      "Won first place for building an accessible ML pipeline builder with drag-and-drop interface.",
+      "First place for an accessible ML pipeline builder with a drag-and-drop interface.",
   },
 ];

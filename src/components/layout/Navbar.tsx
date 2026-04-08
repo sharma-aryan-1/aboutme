@@ -15,14 +15,24 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { Home, FolderOpen, FileText, Mail, Sun, Moon } from "lucide-react";
+import { Home, Newspaper, FolderOpen, FileText, Mail, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const dockItems = [
   { icon: Home, href: "#", label: "Home" },
+  { icon: Newspaper, href: "#news", label: "News" },
   { icon: FolderOpen, href: "#projects", label: "Projects" },
   { icon: FileText, href: "#publications", label: "Publications" },
   { icon: Mail, href: "#contact", label: "Contact" },
+];
+
+/** Bottom of page first: whichever matches wins (single active dock item). */
+const SECTION_PRIORITY: { id: string; href: string }[] = [
+  { id: "contact", href: "#contact" },
+  { id: "publications", href: "#publications" },
+  { id: "projects", href: "#projects" },
+  { id: "news", href: "#news" },
+  { id: "intro", href: "#" },
 ];
 
 function useDockMagnification(mouseX: MotionValue<number>, ref: React.RefObject<HTMLElement | null>) {
@@ -132,23 +142,19 @@ export default function Navbar() {
   const mouseX = useMotionValue(Infinity);
 
   useEffect(() => {
-    const sections = ["contact", "publications", "projects", "news"];
+    const visible = new Map<string, boolean>();
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            if (id === "projects") setActiveSection("#projects");
-            else if (id === "publications") setActiveSection("#publications");
-            else if (id === "contact") setActiveSection("#contact");
-            else setActiveSection("#");
-          }
+          visible.set(entry.target.id, entry.isIntersecting);
         }
+        const next = SECTION_PRIORITY.find(({ id }) => visible.get(id));
+        if (next) setActiveSection(next.href);
       },
-      { threshold: 0.3 }
+      { threshold: [0.2, 0.35], rootMargin: "-12% 0px -12% 0px" }
     );
 
-    for (const id of sections) {
+    for (const { id } of SECTION_PRIORITY) {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     }

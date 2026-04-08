@@ -1,6 +1,49 @@
+export interface HeroQuote {
+  quote: string;
+  author: string;
+}
+
 export const siteConfig = {
   name: "Aryan Sharma",
   tagline: "Researching and engineering in AI, ML, and DS",
+  /** Quotes that rotate slowly under the tagline (hero). */
+  heroRotatingLines: [
+    {
+      quote:
+        "The Analytical Engine weaves algebraic patterns just as the Jacquard loom weaves flowers and leaves.",
+      author: "Ada Lovelace",
+    },
+    {
+      quote:
+        "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
+      author: "Alan Turing",
+    },
+    {
+      quote:
+        "The most damaging phrase in the language is: we have always done it this way.",
+      author: "Grace Hopper",
+    },
+    {
+      quote: "What I cannot create, I do not understand.",
+      author: "Richard Feynman",
+    },
+    {
+      quote: "The best way to predict the future is to invent it.",
+      author: "Alan Kay",
+    },
+    {
+      quote: "It is the job of artists to give the audience what they need.",
+      author: "Alan Moore",
+    },
+    {
+      quote:
+        "The science of looking inside the AI models, I am convinced that this ultimately holds the key to making the model safe and controllable, because it's the only ground truth we have.",
+      author: "Dario Amodei",
+    },
+  ] satisfies HeroQuote[],
+  /** One serif lead sentence above the bio paragraphs. */
+  aboutLead:
+    "The best ML work, to me, lives where rigorous methods meet code you trust in production.",
   subtitle: "MSCS @ UC Riverside",
   currently: "Looking for summer internship opportunities in AI, ML, and DS",
   researchInterests: [
@@ -18,7 +61,6 @@ export const siteConfig = {
   github: "https://github.com/sharma-aryan-1",
   linkedin: "https://www.linkedin.com/in/sharmaaryan25/",
   scholar: "https://scholar.google.com/citations?user=gZ4CkwoAAAAJ&hl=en",
-  twitter: "https://twitter.com/alexchen",
   resumeUrl: "/resume.pdf",
 };
 
@@ -41,7 +83,7 @@ export const news: NewsEntry[] = [
   },
   {
     date: "2025.11",
-    content: "Built a prototype vaccine schedule listting web app for a funded college project",
+    content: "Built a prototype vaccine schedule listing web app for a funded college project",
     link: "https://github.com/sharma-aryan-1/proto-getvax-v1",
     linkText: "GitHub",
     type: "project",

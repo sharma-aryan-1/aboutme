@@ -20,6 +20,13 @@ export default function About() {
             About
           </h2>
 
+          <p
+            className="text-lg sm:text-xl text-text-primary/90 leading-snug mb-6 border-l-2 border-accent/40 pl-4"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {siteConfig.aboutLead}
+          </p>
+
           <div className="space-y-4">
             {siteConfig.bio.map((paragraph, i) => (
               <p key={i} className="text-text-secondary leading-relaxed">

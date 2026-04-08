@@ -5,6 +5,7 @@ import { ChevronDown, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, ScholarIcon } from "@/components/ui/BrandIcons";
 import { siteConfig } from "@/data/siteConfig";
 import { withAssetBase } from "@/lib/assetPath";
+import HeroRotatingLines from "@/components/sections/HeroRotatingLines";
 
 const socialLinks = [
   { icon: GithubIcon, href: siteConfig.github, label: "GitHub" },
@@ -15,7 +16,10 @@ const socialLinks = [
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="intro"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
       {/* Subtle dot grid for hero only */}
       <div
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
@@ -65,6 +69,15 @@ export default function Hero() {
             >
               {siteConfig.tagline}
             </motion.p>
+
+            <motion.div
+              className="mt-3"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.52 }}
+            >
+              <HeroRotatingLines lines={siteConfig.heroRotatingLines} />
+            </motion.div>
 
             {/* Research interests */}
             <motion.div
@@ -134,8 +147,7 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5, duration: 0.8 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-text-secondary hover:text-accent transition-colors"
-        style={{ animation: "chevron-bounce 2s ease-in-out infinite" }}
+        className="chevron-hint absolute bottom-8 left-1/2 -translate-x-1/2 text-text-secondary hover:text-accent transition-colors"
       >
         <ChevronDown size={20} />
       </motion.a>

@@ -32,6 +32,8 @@ jobs:
           # Must match GitHub Pages URL path: …github.io/<repo>/
           # For a root user site (username.github.io repo), set this to "" in the workflow.
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          # Absolute site URL for Open Graph / Twitter cards (metadataBase).
+          NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3

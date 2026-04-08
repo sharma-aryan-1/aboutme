@@ -48,7 +48,7 @@ export const projects: Project[] = [
   },
   {
     slug: "smart_subs",
-    title: "Smart Subtitile Placement Engine",
+    title: "Smart Subtitle Placement Engine",
     shortDescription:
       "A dynamic caption placement engine for videos with YOLOv8",
     longDescription:
@@ -63,8 +63,8 @@ export const projects: Project[] = [
     date: "2026-02",
     highlights: [
       "Dynamically calculates optimal subtitle placement across a 6-zone spatial grid to prevent the occlusion of faces and critical action.",
-      "strict <15% Intersection over Union (IoU) veto threshold to create dynamic \"cost heatmaps\" across 1080p video frames.",
-      "Temporal aggregation algorithm acheived 80% reduction in processing time.",
+      "Strict <15% Intersection over Union (IoU) veto threshold to create dynamic \"cost heatmaps\" across 1080p video frames.",
+      "Temporal aggregation algorithm achieved 80% reduction in processing time.",
       "Conversion engine parses standard SRT files to ASS format for seamless integration into video players.",
     ],
   },
