@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Mail, ArrowUpRight } from "lucide-react";
-import { GithubIcon, LinkedinIcon, ScholarIcon, XIcon } from "@/components/ui/BrandIcons";
+import { GithubIcon, LinkedinIcon, ScholarIcon } from "@/components/ui/BrandIcons";
 import { siteConfig } from "@/data/siteConfig";
 
 const contactLinks = [

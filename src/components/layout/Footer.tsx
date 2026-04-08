@@ -1,5 +1,5 @@
 import { Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon, XIcon, ScholarIcon } from "@/components/ui/BrandIcons";
+import { GithubIcon, LinkedinIcon, ScholarIcon } from "@/components/ui/BrandIcons";
 import { siteConfig } from "@/data/siteConfig";
 
 const navColumns = [

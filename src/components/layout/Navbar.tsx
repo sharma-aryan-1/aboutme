@@ -153,7 +153,10 @@ function ThemeButton({
   const ref = useRef<HTMLButtonElement>(null);
   const scale = useDockMagnification(mouseX, ref);
 
-  useEffect(() => setMounted(true), []);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   if (!mounted) return <div className="w-10 h-10 shrink-0" />;
 
