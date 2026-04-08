@@ -1,4 +1,5 @@
 import Hero from "@/components/sections/Hero";
+import FeaturedHighlights from "@/components/sections/FeaturedHighlights";
 import LatestNews from "@/components/sections/LatestNews";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      <FeaturedHighlights />
       <LatestNews />
       <About />
       <Projects />

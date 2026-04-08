@@ -20,9 +20,9 @@ export default function About() {
             About
           </h2>
 
-          <div className="space-y-4">
+          <div className="space-y-4 max-w-prose">
             {siteConfig.bio.map((paragraph, i) => (
-              <p key={i} className="text-text-secondary leading-relaxed">
+              <p key={i} className="text-text-secondary leading-relaxed text-[1.05rem]">
                 {paragraph}
               </p>
             ))}

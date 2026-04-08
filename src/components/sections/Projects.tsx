@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import {
   motion,
   AnimatePresence,
+  useReducedMotion,
   useMotionValue,
   useSpring,
   useTransform,
@@ -46,11 +47,13 @@ function FilterItem({
   isActive,
   mouseX,
   onClick,
+  staticFilters,
 }: {
   category: string;
   isActive: boolean;
   mouseX: MotionValue<number>;
   onClick: () => void;
+  staticFilters: boolean;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
   const scale = useFilterMagnification(mouseX, ref);
@@ -58,41 +61,76 @@ function FilterItem({
   const Icon = meta.icon;
   const [hovered, setHovered] = useState(false);
 
+  const className = cn(
+    "relative w-9 h-9 flex items-center justify-center rounded-xl transition-colors duration-200 origin-center cursor-pointer",
+    isActive
+      ? "text-white bg-white/[0.12]"
+      : "text-neutral-300/80 hover:text-white"
+  );
+
+  const indicator = staticFilters ? (
+    isActive ? <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-white" /> : null
+  ) : (
+    isActive ? (
+      <motion.div
+        layoutId="filter-indicator"
+        className="absolute -bottom-1 w-1 h-1 rounded-full bg-white"
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      />
+    ) : null
+  );
+
+  const tooltip =
+    hovered &&
+    (staticFilters ? (
+      <span className="absolute -bottom-7 text-[10px] font-medium text-text-secondary bg-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap pointer-events-none z-10">
+        {meta.label}
+      </span>
+    ) : (
+      <motion.span
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 4 }}
+        className="absolute -bottom-7 text-[10px] font-medium text-text-secondary bg-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap pointer-events-none z-10"
+      >
+        {meta.label}
+      </motion.span>
+    ));
+
+  if (staticFilters) {
+    return (
+      <button
+        ref={ref}
+        type="button"
+        onClick={onClick}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        className={className}
+        aria-label={`Filter: ${meta.label}`}
+        aria-pressed={isActive}
+      >
+        <Icon size={16} strokeWidth={1.8} />
+        {indicator}
+        {tooltip}
+      </button>
+    );
+  }
+
   return (
     <motion.button
       ref={ref}
+      type="button"
       onClick={onClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{ scale }}
-      className={cn(
-        "relative w-9 h-9 flex items-center justify-center rounded-xl transition-colors duration-200 origin-center cursor-pointer",
-        isActive
-          ? "text-white bg-white/[0.12]"
-          : "text-neutral-300/80 hover:text-white"
-      )}
+      className={className}
       aria-label={`Filter: ${meta.label}`}
+      aria-pressed={isActive}
     >
       <Icon size={16} strokeWidth={1.8} />
-
-      {isActive && (
-        <motion.div
-          layoutId="filter-indicator"
-          className="absolute -bottom-1 w-1 h-1 rounded-full bg-white"
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        />
-      )}
-
-      {hovered && (
-        <motion.span
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 4 }}
-          className="absolute -bottom-7 text-[10px] font-medium text-text-secondary bg-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap pointer-events-none z-10"
-        >
-          {meta.label}
-        </motion.span>
-      )}
+      {indicator}
+      {tooltip}
     </motion.button>
   );
 }
@@ -100,6 +138,8 @@ function FilterItem({
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const mouseX = useMotionValue(Infinity);
+  const prefersReducedMotion = useReducedMotion();
+  const staticFilters = prefersReducedMotion === true;
 
   const filtered =
     activeCategory === "All"
@@ -124,7 +164,9 @@ export default function Projects() {
           </h2>
 
           <div
-            onMouseMove={(e) => mouseX.set(e.pageX)}
+            onMouseMove={(e) => {
+              if (!staticFilters) mouseX.set(e.pageX);
+            }}
             onMouseLeave={() => mouseX.set(Infinity)}
             className="dock-pill inline-flex items-center gap-0.5 px-2 py-1.5 rounded-2xl backdrop-blur-xl border border-white/[0.08]"
           >
@@ -135,6 +177,7 @@ export default function Projects() {
                 isActive={activeCategory === category}
                 mouseX={mouseX}
                 onClick={() => setActiveCategory(category)}
+                staticFilters={staticFilters}
               />
             ))}
           </div>
@@ -143,10 +186,10 @@ export default function Projects() {
         <AnimatePresence mode="wait">
           <motion.div
             key={activeCategory}
-            initial={{ opacity: 0, y: 8 }}
+            initial={staticFilters ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
+            exit={{ opacity: 0, y: staticFilters ? 0 : -8 }}
+            transition={{ duration: staticFilters ? 0 : 0.25 }}
             className="grid md:grid-cols-2 gap-4"
           >
             {filtered.map((project, i) => (

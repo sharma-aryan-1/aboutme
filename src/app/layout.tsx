@@ -40,11 +40,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable}`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="min-h-screen bg-background text-foreground antialiased noise-overlay">
+        <a href="#main-content" className="skip-to-main">
+          Skip to main content
+        </a>
         <ThemeProvider>
           <AmbientBackground />
           <Navbar />
-          <main className="relative z-10">{children}</main>
+          <main id="main-content" className="relative z-10">
+            {children}
+          </main>
           <Footer className="relative z-10" />
         </ThemeProvider>
       </body>
