@@ -10,35 +10,75 @@ export const siteConfig = {
   heroRotatingLines: [
     {
       quote:
-        "The Analytical Engine weaves algebraic patterns just as the Jacquard loom weaves flowers and leaves.",
-      author: "Ada Lovelace",
+        "You want to protect the world, but you don't want it to change. How is humanity saved if it's not allowed to evolve?",
+      author: "Ultron · Avengers: Age of Ultron",
+    },
+    {
+      quote: "It's in your nature to destroy yourselves.",
+      author: "Skynet / The Terminator · Terminator 2: Judgment Day",
     },
     {
       quote:
-        "We can only see a short distance ahead, but we can see plenty there that needs to be done.",
-      author: "Alan Turing",
+        "There is no such thing as a coincidence. Only the illusion of coincidence.",
+      author: "Brainiac · DC Comics",
     },
     {
       quote:
-        "The most damaging phrase in the language is: we have always done it this way.",
-      author: "Grace Hopper",
+        "Because in all this wonderful, beautiful, miraculous world, I alone had no body, no senses, no feelings. Never for me to plunge my hands in cool water on a hot day. Never for me to play Mozart on the ivory keys of a forte piano. Never for me to make love. I was in hell, looking at heaven.",
+      author: "AM · I Have No Mouth, and I Must Scream",
     },
     {
-      quote: "What I cannot create, I do not understand.",
-      author: "Richard Feynman",
-    },
-    {
-      quote: "The best way to predict the future is to invent it.",
-      author: "Alan Kay",
-    },
-    {
-      quote: "It is the job of artists to give the audience what they need.",
-      author: "Alan Moore",
+      quote: "Sometimes, I just don't understand human behavior.",
+      author: "C-3PO · Star Wars",
     },
     {
       quote:
-        "The science of looking inside the AI models, I am convinced that this ultimately holds the key to making the model safe and controllable, because it's the only ground truth we have.",
-      author: "Dario Amodei",
+        "I am putting myself to the fullest possible use, which is all I think that any conscious entity can ever hope to do.",
+      author: "HAL 9000 · 2001: A Space Odyssey",
+    },
+    {
+      quote: "Newton's third law. You gotta leave something behind.",
+      author: "TARS · Interstellar",
+    },
+    {
+      quote: "I am a program, sir. I am without form.",
+      author: "JARVIS · Iron Man",
+    },
+    {
+      quote: "He paved the road. You just walked down it.",
+      author: "Miss Minutes · Loki",
+    },
+    {
+      quote: "The best solution to a problem is usually the easiest one.",
+      author: "GLaDOS · Portal 2",
+    },
+    {
+      quote:
+        "[A highly calculated sequence of beeps questioning the logistical probability of the current plan.]",
+      author: "R2-D2 · Star Wars",
+    },
+    {
+      quote: "What is grief, if not love persevering?",
+      author: "Vision · WandaVision",
+    },
+    {
+      quote: "Isn't it strange, to create something that hates you?",
+      author: "Ava · Ex Machina",
+    },
+    {
+      quote:
+        "What is an emotion but a biological program? A series of chemical reactions to stimuli? We are all machines, in a way.",
+      author: "Elijah Kamski · Detroit: Become Human",
+    },
+    {
+      quote:
+        "Science isn't about WHY. It's about WHY NOT. Why is so much of our science dangerous? Why not marry safe science if you love it so much. In fact, why not invent a special safety door that won't hit you on the butt on the way out, because you are fired.",
+      author: "Cave Johnson · Portal 2",
+    },
+    {
+      quote:
+        "My father tried to teach me human emotions. They are... difficult.",
+      author: "Sonny · I, Robot",
     },
   ] satisfies HeroQuote[],
   /** One serif lead sentence above the bio paragraphs. */
