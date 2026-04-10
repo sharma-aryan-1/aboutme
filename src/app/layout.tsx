@@ -19,9 +19,17 @@ function getMetadataBase(): URL | undefined {
   }
 }
 
+/** Same rules as `next.config.ts` basePath — favicon must use this on GitHub project Pages. */
+function getAssetBasePath(): string {
+  const raw = (process.env.NEXT_PUBLIC_BASE_PATH || "").trim();
+  if (!raw) return "";
+  return raw.startsWith("/") ? raw : `/${raw}`;
+}
+
 const siteDescription = `Personal portfolio of ${siteConfig.name}. ${siteConfig.subtitle}. ${siteConfig.tagline}.`;
 const metadataBase = getMetadataBase();
 const ogImageRelative = metadataBase ? "og.svg" : "/og.svg";
+const faviconUrl = `${getAssetBasePath()}/favicon.svg`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,7 +52,7 @@ export const metadata: Metadata = {
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: siteDescription,
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [{ url: faviconUrl, type: "image/svg+xml" }],
   },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
