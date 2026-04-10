@@ -43,6 +43,9 @@ export const metadata: Metadata = {
   metadataBase,
   title: `${siteConfig.name} — ${siteConfig.tagline}`,
   description: siteDescription,
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteDescription,
