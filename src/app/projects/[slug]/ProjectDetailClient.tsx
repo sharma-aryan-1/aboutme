@@ -1,88 +1,85 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import {
   ArrowLeft,
+  ArrowUpRight,
   ExternalLink,
   FileText,
-  CheckCircle2,
 } from "lucide-react";
 import { GithubIcon } from "@/components/ui/BrandIcons";
 import type { Project } from "@/data/projects";
-import { withAssetBase } from "@/lib/assetPath";
 
-const categoryGradients: Record<string, string> = {
-  "ML/DL": "from-purple-500/20 via-violet-500/10 to-transparent",
-  "AI Models": "from-pink-500/20 via-rose-500/10 to-transparent",
-  "Research": "from-blue-500/20 via-indigo-500/10 to-transparent",
-  "RAG Systems": "from-emerald-500/20 via-teal-500/10 to-transparent",
-};
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const fadeUp = (delay = 0, y = 28) => ({
+  initial: { opacity: 0, y },
+  animate: { opacity: 1, y: 0 },
+  transition: { duration: 0.7, delay, ease: EASE },
+});
+
+const maskReveal = (delay = 0) => ({
+  initial: { opacity: 0, y: 32, clipPath: "inset(100% 0% 0% 0%)" },
+  animate: { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" },
+  transition: { duration: 0.85, delay, ease: EASE },
+});
 
 export default function ProjectDetailClient({ project }: { project: Project }) {
-  const [imgError, setImgError] = useState(false);
-  const hasImage = project.image && !imgError;
-
   return (
-    <div className="min-h-screen pt-24 pb-16 px-6">
+    <div className="min-h-screen pt-28 pb-16 px-6">
       <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <motion.div {...fadeUp(0, 12)}>
           <Link
             href="/#projects"
-            className="inline-flex items-center gap-1.5 text-sm text-text-secondary hover:text-accent transition-colors mb-8"
+            className="inline-flex items-center gap-1.5 text-[13px] text-text-secondary hover:text-accent transition-colors mb-10 group"
           >
-            <ArrowLeft size={14} />
-            Back to Projects
+            <ArrowLeft
+              size={14}
+              className="group-hover:-translate-x-0.5 transition-transform"
+            />
+            Back to projects
           </Link>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          <div className="flex items-center gap-2 mb-3 text-xs text-text-secondary">
-            <span className="px-2 py-0.5 font-medium rounded bg-accent-soft text-accent">
-              {project.category}
+        <motion.div {...fadeUp(0.05)}>
+          <div className="flex items-center gap-3 mb-3 flex-wrap">
+            <span className="section-label !text-accent">{project.category}</span>
+            {project.status && (
+              <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">
+                / {project.status}
+              </span>
+            )}
+            <span className="ml-auto font-mono text-[11px] text-text-muted">
+              {project.date}
             </span>
-            <span>{project.date}</span>
           </div>
 
-          <h1
-            className="text-3xl sm:text-4xl font-medium text-text-primary mb-4 tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
+          <motion.h1
+            {...maskReveal(0.1)}
+            className="font-display text-4xl sm:text-5xl text-text-primary mb-4 leading-tight"
           >
             {project.title}
-          </h1>
+          </motion.h1>
 
-          <div className="flex flex-wrap gap-1.5 mb-6">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="px-2 py-0.5 text-xs rounded bg-surface-hover text-text-secondary"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+          <motion.p
+            {...fadeUp(0.18)}
+            className="text-[16px] leading-relaxed text-text-secondary mb-6 max-w-2xl"
+          >
+            {project.shortDescription}
+          </motion.p>
 
-          <div className="flex flex-wrap gap-2 mb-10">
+          <motion.div {...fadeUp(0.24)} className="flex flex-wrap gap-2 mb-12">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg
-                           border border-border hover:border-accent/40 hover:text-accent transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md border border-border text-[13px] text-text-secondary hover:text-text-primary hover:border-accent hover:bg-surface transition-colors"
               >
                 <GithubIcon size={14} />
-                Source Code
+                Source
+                <ArrowUpRight size={12} className="text-text-muted" />
               </a>
             )}
             {project.liveUrl && (
@@ -90,11 +87,10 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg
-                           bg-accent text-white hover:bg-accent-hover transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-accent text-accent-ink text-[13px] font-semibold hover:bg-accent-hover transition-colors"
               >
                 <ExternalLink size={14} />
-                Live Demo
+                Live demo
               </a>
             )}
             {project.paperUrl && (
@@ -102,99 +98,99 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
                 href={project.paperUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-sm rounded-lg
-                           border border-border hover:border-accent/40 hover:text-accent transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md border border-border text-[13px] text-text-secondary hover:text-text-primary hover:border-accent hover:bg-surface transition-colors"
               >
                 <FileText size={14} />
                 Paper
+                <ArrowUpRight size={12} className="text-text-muted" />
               </a>
             )}
-          </div>
+          </motion.div>
         </motion.div>
 
-        {/* Visual header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className={`relative rounded-xl bg-gradient-to-br ${categoryGradients[project.category] || categoryGradients["ML/DL"]} border border-border overflow-hidden mb-10 ${hasImage ? "" : "h-48 sm:h-64"}`}
+        <motion.section
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mb-12"
         >
-          {hasImage ? (
-            <Image
-              src={withAssetBase(project.image)}
-              alt={project.title}
-              width={1200}
-              height={800}
-              className="w-full h-auto"
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-text-primary/10 font-mono">
-                  {project.title.split(" ").map(w => w[0]).join("")}
-                </div>
-                <div className="flex flex-wrap gap-1.5 justify-center mt-3 px-4">
-                  {project.techStack.slice(0, 5).map((tech) => (
-                    <span key={tech} className="px-2 py-0.5 text-xs rounded bg-background/40 text-text-secondary backdrop-blur-sm">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="mb-10"
-        >
-          <h2 className="text-lg font-semibold text-text-primary mb-3">Overview</h2>
-          <p className="text-text-secondary leading-relaxed">
+          <h2 className="section-label !text-accent mb-3">Overview</h2>
+          <p className="text-[15px] text-text-secondary leading-relaxed">
             {project.longDescription}
           </p>
-        </motion.div>
+        </motion.section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="mb-10"
+        <motion.section
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mb-12"
         >
-          <h2 className="text-lg font-semibold text-text-primary mb-3">Key Results</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {project.highlights.map((highlight, i) => (
-              <div
+          <h2 className="section-label !text-accent mb-4">Key results</h2>
+          <ol className="space-y-3">
+            {project.highlights.map((h, i) => (
+              <motion.li
                 key={i}
-                className="flex items-start gap-2.5 p-4 rounded-xl bg-surface border border-border"
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-15%" }}
+                transition={{ duration: 0.55, delay: i * 0.08, ease: EASE }}
+                className="grid grid-cols-[32px_1fr] items-baseline gap-x-3 py-2 border-b border-border last:border-b-0"
               >
-                <CheckCircle2 size={15} className="text-accent shrink-0 mt-0.5" />
-                <span className="text-sm text-text-secondary">{highlight}</span>
-              </div>
+                <span className="idx tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[14.5px] text-text-secondary leading-relaxed">
+                  {h}
+                </span>
+              </motion.li>
             ))}
-          </div>
-        </motion.div>
+          </ol>
+        </motion.section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
+        <motion.section
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-15%" }}
+          transition={{ duration: 0.7, ease: EASE }}
+          className="mb-12"
         >
-          <h2 className="text-lg font-semibold text-text-primary mb-3">Tech Stack</h2>
-          <div className="flex flex-wrap gap-2">
+          <h2 className="section-label !text-accent mb-4">Tech stack</h2>
+          <div className="flex flex-wrap gap-1.5">
             {project.techStack.map((tech) => (
               <span
                 key={tech}
-                className="px-3 py-1.5 text-sm rounded-md bg-surface-hover text-text-primary"
+                className="px-2.5 py-1 text-[12.5px] font-mono rounded-md bg-surface border border-border text-text-secondary"
               >
                 {tech}
               </span>
             ))}
           </div>
-        </motion.div>
+        </motion.section>
+
+        {project.tags.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-15%" }}
+            transition={{ duration: 0.7, ease: EASE }}
+            className="mb-12"
+          >
+            <h2 className="section-label !text-accent mb-4">Topics</h2>
+            <div className="flex flex-wrap gap-1.5">
+              {project.tags.map((t) => (
+                <span
+                  key={t}
+                  className="px-2 py-0.5 text-[11px] font-mono rounded bg-background border border-border text-text-muted"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </motion.section>
+        )}
       </div>
     </div>
   );

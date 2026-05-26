@@ -1,41 +1,35 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { siteConfig } from "@/data/siteConfig";
+import Section from "@/components/ui/Section";
+import { RevealStagger, RevealItem } from "@/components/ui/Reveal";
 
 export default function About() {
+  const [lead, ...rest] = siteConfig.bio;
   return (
-    <section id="about" className="py-20 px-6">
-      <div className="max-w-3xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
+    <Section id="about" number="01" title="About">
+      <RevealStagger staggerChildren={0.18} className="space-y-6">
+        <RevealItem
+          as="p"
+          offset={40}
+          duration={0.95}
+          className="font-display text-2xl sm:text-3xl leading-[1.25] text-text-primary"
         >
-          <h2
-            className="text-2xl font-semibold text-text-primary mb-6"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            About
-          </h2>
+          {lead}
+        </RevealItem>
 
-          <p
-            className="text-lg sm:text-xl text-text-primary/90 leading-snug mb-6 border-l-2 border-accent/40 pl-4"
-            style={{ fontFamily: "var(--font-serif)" }}
+        {rest.map((paragraph, i) => (
+          <RevealItem
+            key={i}
+            as="p"
+            offset={32}
+            duration={0.85}
+            className="text-[15px] leading-relaxed text-text-secondary"
           >
-            {siteConfig.aboutLead}
-          </p>
-
-          <div className="space-y-4">
-            {siteConfig.bio.map((paragraph, i) => (
-              <p key={i} className="text-text-secondary leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-    </section>
+            {paragraph}
+          </RevealItem>
+        ))}
+      </RevealStagger>
+    </Section>
   );
 }

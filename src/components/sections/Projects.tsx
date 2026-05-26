@@ -1,165 +1,114 @@
 "use client";
 
-import { useState, useRef } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
-import { LayoutGrid, Brain, Bot, FlaskConical, Database } from "lucide-react";
-import ProjectCard from "@/components/ui/ProjectCard";
-import { projects, projectCategories } from "@/data/projects";
-import { cn } from "@/lib/utils";
-
-const categoryMeta: Record<string, { icon: typeof Brain; label: string }> = {
-  All: { icon: LayoutGrid, label: "All" },
-  "ML/DL": { icon: Brain, label: "ML/DL" },
-  "AI Models": { icon: Bot, label: "AI Models" },
-  Research: { icon: FlaskConical, label: "Research" },
-  "RAG Systems": { icon: Database, label: "RAG Systems" },
-};
-
-function useFilterMagnification(
-  mouseX: MotionValue<number>,
-  ref: React.RefObject<HTMLElement | null>
-) {
-  const distance = useTransform(mouseX, (val: number) => {
-    const el = ref.current;
-    if (!el) return 150;
-    const bounds = el.getBoundingClientRect();
-    return val - bounds.x - bounds.width / 2;
-  });
-
-  const scale = useTransform(
-    distance,
-    [-80, -40, 0, 40, 80],
-    [1, 1.08, 1.18, 1.08, 1]
-  );
-  return useSpring(scale, { mass: 0.2, stiffness: 300, damping: 18 });
-}
-
-function FilterItem({
-  category,
-  isActive,
-  mouseX,
-  onClick,
-}: {
-  category: string;
-  isActive: boolean;
-  mouseX: MotionValue<number>;
-  onClick: () => void;
-}) {
-  const ref = useRef<HTMLButtonElement>(null);
-  const scale = useFilterMagnification(mouseX, ref);
-  const meta = categoryMeta[category] || categoryMeta["All"];
-  const Icon = meta.icon;
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <motion.button
-      ref={ref}
-      onClick={onClick}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ scale }}
-      className={cn(
-        "relative w-9 h-9 flex items-center justify-center rounded-xl transition-colors duration-200 origin-center cursor-pointer",
-        isActive
-          ? "text-white bg-white/[0.12]"
-          : "text-neutral-300/80 hover:text-white"
-      )}
-      aria-label={`Filter: ${meta.label}`}
-    >
-      <Icon size={16} strokeWidth={1.8} />
-
-      {isActive && (
-        <motion.div
-          layoutId="filter-indicator"
-          className="absolute -bottom-1 w-1 h-1 rounded-full bg-white"
-          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        />
-      )}
-
-      {hovered && (
-        <motion.span
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 4 }}
-          className="absolute -bottom-7 text-[10px] font-medium text-text-secondary bg-surface/90 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap pointer-events-none z-10"
-        >
-          {meta.label}
-        </motion.span>
-      )}
-    </motion.button>
-  );
-}
+import Link from "next/link";
+import { ArrowUpRight, ExternalLink, FileText } from "lucide-react";
+import { GithubIcon } from "@/components/ui/BrandIcons";
+import { projects } from "@/data/projects";
+import Section from "@/components/ui/Section";
+import { RevealStagger, RevealItem } from "@/components/ui/Reveal";
 
 export default function Projects() {
-  const [activeCategory, setActiveCategory] = useState<string>("All");
-  const mouseX = useMotionValue(Infinity);
-
-  const filtered =
-    activeCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === activeCategory);
-
   return (
-    <section id="projects" className="py-20 px-6">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8"
-        >
-          <h2
-            className="text-2xl font-semibold text-text-primary"
-            style={{ fontFamily: "var(--font-serif)" }}
+    <Section id="projects" number="03" title="Selected projects">
+      <RevealStagger as="ul" staggerChildren={0.18} className="space-y-3">
+        {projects.map((p, i) => (
+          <RevealItem
+            key={p.slug}
+            as="li"
+            variant={i % 2 === 0 ? "left" : "right"}
+            offset={28}
+            duration={0.9}
           >
-            Selected Projects
-          </h2>
+            <Link
+              href={`/projects/${p.slug}`}
+              className="group relative block overflow-hidden rounded-xl border border-border bg-surface hover:border-accent transition-all duration-300 p-5 sm:p-6"
+            >
+              <span className="card-stripe" aria-hidden />
 
-          <div
-            onMouseMove={(e) => mouseX.set(e.pageX)}
-            onMouseLeave={() => mouseX.set(Infinity)}
-            className="dock-pill inline-flex items-center gap-0.5 px-2 py-1.5 rounded-2xl backdrop-blur-xl border border-white/[0.08]"
-          >
-            {projectCategories.map((category) => (
-              <FilterItem
-                key={category}
-                category={category}
-                isActive={activeCategory === category}
-                mouseX={mouseX}
-                onClick={() => setActiveCategory(category)}
-              />
-            ))}
-          </div>
-        </motion.div>
+              <div className="flex items-center gap-3 mb-3 flex-wrap">
+                <span className="section-label !text-accent">{p.category}</span>
+                {p.status && (
+                  <span className="font-mono text-[11px] uppercase tracking-wider text-text-muted">
+                    / {p.status}
+                  </span>
+                )}
+                <span className="ml-auto font-mono text-[11px] text-text-muted">
+                  {p.date}
+                </span>
+              </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCategory}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="grid md:grid-cols-2 gap-4"
-          >
-            {filtered.map((project, i) => (
-              <ProjectCard
-                key={project.slug}
-                project={project}
-                index={i}
-                featured={i === 0 && activeCategory === "All"}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </section>
+              <h3 className="font-display text-2xl sm:text-3xl text-text-primary mb-2 leading-tight group-hover:text-accent transition-colors flex items-start gap-2">
+                <span>{p.title}</span>
+                <ArrowUpRight
+                  size={18}
+                  className="mt-2 text-text-muted opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-accent transition-all duration-300 shrink-0"
+                />
+              </h3>
+
+              <p className="text-[14.5px] text-text-secondary leading-relaxed mb-4">
+                {p.shortDescription}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <div className="flex flex-wrap gap-1.5">
+                  {p.techStack.slice(0, 6).map((t) => (
+                    <span
+                      key={t}
+                      className="px-2 py-0.5 text-[11px] font-mono rounded bg-background border border-border text-text-muted"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                  {p.techStack.length > 6 && (
+                    <span className="text-[11px] font-mono text-text-muted self-center">
+                      +{p.techStack.length - 6}
+                    </span>
+                  )}
+                </div>
+
+                <div className="ml-auto flex items-center gap-3 text-[12px]">
+                  {p.githubUrl && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(p.githubUrl, "_blank");
+                      }}
+                      className="inline-flex items-center gap-1 text-text-muted hover:text-accent transition-colors"
+                    >
+                      <GithubIcon size={12} /> code
+                    </button>
+                  )}
+                  {p.liveUrl && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(p.liveUrl, "_blank");
+                      }}
+                      className="inline-flex items-center gap-1 text-text-muted hover:text-accent transition-colors"
+                    >
+                      <ExternalLink size={12} /> demo
+                    </button>
+                  )}
+                  {p.paperUrl && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open(p.paperUrl, "_blank");
+                      }}
+                      className="inline-flex items-center gap-1 text-text-muted hover:text-accent transition-colors"
+                    >
+                      <FileText size={12} /> paper
+                    </button>
+                  )}
+                </div>
+              </div>
+            </Link>
+          </RevealItem>
+        ))}
+      </RevealStagger>
+    </Section>
   );
 }

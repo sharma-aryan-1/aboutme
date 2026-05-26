@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ChevronDown, Mail } from "lucide-react";
+import { Mail, ArrowUpRight } from "lucide-react";
 import { GithubIcon, LinkedinIcon, ScholarIcon } from "@/components/ui/BrandIcons";
 import { siteConfig } from "@/data/siteConfig";
 import { withAssetBase } from "@/lib/assetPath";
@@ -14,143 +14,135 @@ const socialLinks = [
   { icon: Mail, href: `mailto:${siteConfig.email}`, label: "Email" },
 ];
 
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0 },
+};
+
+const maskReveal = {
+  hidden: { opacity: 0, y: 32, clipPath: "inset(100% 0% 0% 0%)" },
+  show: { opacity: 1, y: 0, clipPath: "inset(0% 0% 0% 0%)" },
+};
+
 export default function Hero() {
   return (
     <section
       id="intro"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative isolate min-h-[92vh] flex items-center px-6 pt-28 pb-20 sm:pt-32 sm:pb-24 overflow-hidden"
     >
-      {/* Subtle dot grid for hero only */}
+      <div className="absolute inset-0 hero-grid pointer-events-none" aria-hidden />
       <div
-        className="absolute inset-0 opacity-[0.03] dark:opacity-[0.04]"
-        style={{
-          backgroundImage: `radial-gradient(circle, var(--accent) 1px, transparent 1px)`,
-          backgroundSize: "32px 32px",
-        }}
+        className="hero-blob -top-20 -left-20 sm:left-[-80px] sm:top-[35%]"
+        aria-hidden
       />
 
-      {/* Content */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 py-24">
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
-          {/* Monogram avatar */}
+      <div className="relative max-w-3xl mx-auto w-full">
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: {},
+            show: { transition: { staggerChildren: 0.13, delayChildren: 0.15 } },
+          }}
+          className="flex flex-col gap-7"
+        >
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="shrink-0"
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="inline-flex w-fit items-center gap-2 px-3 py-1.5 rounded-full border border-border bg-surface/80 backdrop-blur"
           >
-            <div className="w-28 h-28 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-accent to-accent-hover flex items-center justify-center shadow-lg shadow-accent-glow">
-              <span
-                className="text-4xl md:text-5xl font-medium text-white tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                {siteConfig.name.split(" ").map((n) => n[0]).join("")}
-              </span>
-            </div>
+            <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-500 ping-dot" />
+            <span className="section-label !text-text-secondary !tracking-wider">
+              {siteConfig.currently}
+            </span>
           </motion.div>
 
-          {/* Text content */}
-          <div className="text-center md:text-left">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-medium text-text-primary tracking-tight"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              {siteConfig.name}
-            </motion.h1>
+          <motion.h1
+            variants={maskReveal}
+            transition={{ duration: 1.05, ease: EASE }}
+            className="font-display text-6xl sm:text-7xl md:text-8xl font-normal text-text-primary leading-[1.08] tracking-tight pb-2"
+          >
+            {siteConfig.name}
+            <span className="text-accent">.</span>
+          </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
-              className="mt-3 text-lg sm:text-xl text-text-secondary max-w-xl"
-            >
-              {siteConfig.tagline}
-            </motion.p>
+          <motion.p
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="text-lg sm:text-xl text-text-secondary -mt-1"
+          >
+            {siteConfig.role}.
+          </motion.p>
 
-            <motion.div
-              className="mt-3"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.52 }}
-            >
-              <HeroRotatingLines lines={siteConfig.heroRotatingLines} />
-            </motion.div>
+          <motion.p
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="max-w-xl text-[15.5px] leading-relaxed text-text-secondary"
+          >
+            {siteConfig.heroLead}
+          </motion.p>
 
-            {/* Research interests */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="mt-5 flex flex-wrap gap-2 justify-center md:justify-start"
-            >
-              {siteConfig.researchInterests.map((interest) => (
-                <span
-                  key={interest}
-                  className="px-3 py-1 text-xs font-medium rounded-full bg-accent-soft text-accent border border-accent/10"
-                >
-                  {interest}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* Social links */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.75 }}
-              className="mt-6 flex items-center gap-1 justify-center md:justify-start"
-            >
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={label === "Email" ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg
-                             text-text-secondary hover:text-accent hover:bg-accent-soft
-                             transition-all duration-200"
-                >
-                  <Icon size={18} />
-                </a>
-              ))}
-              <span className="mx-2 w-px h-5 bg-border" />
-              <a
-                href={withAssetBase(siteConfig.resumeUrl)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-text-secondary hover:text-accent transition-colors"
+          <motion.div
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="flex flex-wrap gap-x-3 gap-y-2"
+          >
+            {siteConfig.researchInterests.map((interest, i) => (
+              <span
+                key={interest}
+                className="text-[12.5px] font-mono text-text-muted"
               >
-                Resume &darr;
+                {interest}
+                {i < siteConfig.researchInterests.length - 1 && (
+                  <span className="ml-3 text-text-muted/40">/</span>
+                )}
+              </span>
+            ))}
+          </motion.div>
+
+          <motion.div
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="flex flex-wrap items-center gap-2 pt-2"
+          >
+            {socialLinks.map(({ icon: Icon, href, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={label === "Email" ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-border text-[13px] text-text-secondary hover:text-text-primary hover:border-accent hover:bg-surface transition-colors"
+              >
+                <Icon size={14} />
+                {label}
               </a>
-            </motion.div>
-
-            {/* Currently */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 1 }}
-              className="mt-6 text-sm text-text-secondary"
+            ))}
+            <a
+              href={withAssetBase(siteConfig.resumeUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-accent text-accent-ink text-[13px] font-semibold hover:bg-accent-hover transition-colors"
             >
-              <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse" />
-              Currently: {siteConfig.currently}
-            </motion.p>
-          </div>
-        </div>
-      </div>
+              Résumé
+              <ArrowUpRight
+                size={14}
+                className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform"
+              />
+            </a>
+          </motion.div>
 
-      <motion.a
-        href="#news"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="chevron-hint absolute bottom-8 left-1/2 -translate-x-1/2 text-text-secondary hover:text-accent transition-colors"
-      >
-        <ChevronDown size={20} />
-      </motion.a>
+          <motion.div
+            variants={fadeUp}
+            transition={{ duration: 0.75, ease: EASE }}
+            className="mt-8 max-w-xl pl-4 border-l-2 border-accent/50"
+          >
+            <HeroRotatingLines lines={siteConfig.heroRotatingLines} />
+          </motion.div>
+        </motion.div>
+      </div>
     </section>
   );
 }

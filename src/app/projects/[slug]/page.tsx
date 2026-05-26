@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
+import { siteConfig } from "@/data/siteConfig";
 import ProjectDetailClient from "./ProjectDetailClient";
 
 export function generateStaticParams() {
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: Props) {
   const project = projects.find((p) => p.slug === slug);
   if (!project) return { title: "Project Not Found" };
   return {
-    title: `${project.title} — Alex Chen`,
+    title: `${project.title}, ${siteConfig.name}`,
     description: project.shortDescription,
   };
 }

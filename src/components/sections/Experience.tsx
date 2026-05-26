@@ -1,61 +1,73 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { experiences } from "@/data/experience";
+import Section from "@/components/ui/Section";
+import { RevealStagger, RevealItem } from "@/components/ui/Reveal";
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-20 px-6">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-semibold text-text-primary mb-8"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          Experience
-        </motion.h2>
-
-        <div className="space-y-6">
-          {experiences.map((exp, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4, delay: i * 0.08 }}
-              className="flex gap-4"
+    <Section id="experience" number="05" title="Experience">
+      <RevealStagger as="ol" className="relative" staggerChildren={0.18}>
+        {experiences.map((e, i) => {
+          const isLast = i === experiences.length - 1;
+          return (
+            <RevealItem
+              key={`${e.company}-${i}`}
+              as="li"
+              offset={28}
+              duration={0.85}
+              className="grid grid-cols-[20px_1fr] gap-x-5 sm:gap-x-6 pb-12 last:pb-6"
             >
-              {/* Company letter avatar */}
-              <div className="w-10 h-10 rounded-lg bg-surface border border-border flex items-center justify-center shrink-0 text-text-secondary font-bold text-sm">
-                {exp.company.charAt(0)}
+              <div className="relative">
+                {/* Dot, centered on the spine. */}
+                <span
+                  className="block w-3 h-3 mt-2 rounded-full bg-background border-2 border-accent relative z-10"
+                  aria-hidden
+                />
+                {/* Spine runs from below this dot down to the bottom of the row;
+                    for non-last items it bleeds into the next li to meet its dot. */}
+                <span
+                  className={`absolute left-[5px] top-[22px] w-px bg-border ${
+                    isLast ? "bottom-2" : "bottom-[-12px]"
+                  }`}
+                  aria-hidden
+                />
               </div>
 
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
-                  <h3 className="font-medium text-text-primary text-sm">{exp.role}</h3>
-                  <span className="text-xs text-text-secondary font-mono shrink-0">
-                    {exp.startDate} — {exp.endDate}
+              <div className="min-w-0">
+                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+                  <h3 className="text-[16px] font-semibold text-text-primary">
+                    {e.role},{" "}
+                    <span className="font-medium text-text-secondary">
+                      {e.company}
+                    </span>
+                  </h3>
+                  <span className="font-mono text-[11px] text-text-muted whitespace-nowrap">
+                    {e.startDate} to {e.endDate}
                   </span>
                 </div>
+                <p className="font-mono text-[11px] text-text-muted mb-4">
+                  {e.location}
+                </p>
 
-                <p className="text-sm text-accent">{exp.company}</p>
-                <p className="text-xs text-text-secondary mb-2">{exp.location}</p>
-
-                <ul className="space-y-1">
-                  {exp.description.map((item, j) => (
-                    <li key={j} className="text-sm text-text-secondary leading-relaxed">
-                      {item}
+                <ul className="space-y-3 text-[14.5px] text-text-secondary leading-relaxed">
+                  {e.description.map((d, j) => (
+                    <li
+                      key={j}
+                      className="grid grid-cols-[28px_1fr] items-baseline gap-x-2"
+                    >
+                      <span className="idx tabular-nums">
+                        {String(j + 1).padStart(2, "0")}
+                      </span>
+                      <span>{d}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+            </RevealItem>
+          );
+        })}
+      </RevealStagger>
+    </Section>
   );
 }

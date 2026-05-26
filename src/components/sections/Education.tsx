@@ -1,58 +1,60 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { education } from "@/data/education";
+import Section from "@/components/ui/Section";
+import { RevealStagger, RevealItem } from "@/components/ui/Reveal";
 
 export default function Education() {
   return (
-    <section id="education" className="py-20 px-6">
-      <div className="max-w-3xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-semibold text-text-primary mb-6"
-          style={{ fontFamily: "var(--font-serif)" }}
-        >
-          Education
-        </motion.h2>
-
-        <div className="space-y-4">
-          {education.map((edu, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.4, delay: i * 0.1 }}
-              className="flex items-start gap-4"
-            >
-              {/* Letter avatar */}
-              <div className="w-10 h-10 rounded-lg bg-accent-soft flex items-center justify-center shrink-0 text-accent font-bold text-sm">
-                {edu.institution.charAt(0)}
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-0.5">
-                  <h3 className="font-medium text-text-primary text-sm">
-                    {edu.institution}
-                  </h3>
-                  <span className="text-xs text-text-secondary font-mono shrink-0">
-                    {edu.startYear} — {edu.endYear}
+    <Section id="education" number="06" title="Education">
+      <RevealStagger as="ol" staggerChildren={0.16} className="space-y-10">
+        {education.map((e) => (
+          <RevealItem
+            key={e.degree}
+            as="li"
+            offset={32}
+            duration={0.85}
+            className="border-l-2 border-accent/50 pl-5"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 mb-1">
+              <h3 className="font-display text-xl sm:text-2xl text-text-primary">
+                {e.institution}
+              </h3>
+              <span className="font-mono text-[11px] text-text-muted whitespace-nowrap">
+                {e.startYear} to {e.endYear}
+              </span>
+            </div>
+            <p className="text-[14px] text-text-secondary mb-2">
+              {e.degree}
+              {e.gpa && (
+                <>
+                  <span className="text-text-muted">, </span>
+                  <span className="font-mono text-[12px] text-text-muted">
+                    GPA {e.gpa}
                   </span>
-                </div>
-                <p className="text-sm text-text-secondary">{edu.degree}</p>
-                {edu.details.length > 0 && (
-                  <p className="text-xs text-text-secondary mt-1">
-                    {edu.details.join(" · ")}
-                  </p>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
+                </>
+              )}
+              <span className="text-text-muted">, </span>
+              <span className="font-mono text-[12px] text-text-muted">
+                {e.location}
+              </span>
+            </p>
+            <ul className="text-[14px] text-text-secondary leading-relaxed space-y-1.5 mt-2">
+              {e.details.map((d, j) => (
+                <li
+                  key={j}
+                  className="grid grid-cols-[28px_1fr] items-baseline gap-x-2"
+                >
+                  <span className="idx tabular-nums">
+                    {String(j + 1).padStart(2, "0")}
+                  </span>
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ul>
+          </RevealItem>
+        ))}
+      </RevealStagger>
+    </Section>
   );
 }

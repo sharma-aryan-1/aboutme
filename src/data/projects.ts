@@ -4,125 +4,138 @@ export interface Project {
   shortDescription: string;
   longDescription: string;
   tags: string[];
-  category: "ML/DL" | "AI Models" | "Research" | "RAG Systems";
+  category: "ML / Systems" | "Computer Vision" | "RAG" | "Research";
   techStack: string[];
   githubUrl?: string;
   liveUrl?: string;
   paperUrl?: string;
-  image: string;
+  image?: string;
   featured: boolean;
   date: string;
+  status?: "Active" | "Shipped" | "Published";
   highlights: string[];
 }
 
 export const projects: Project[] = [
   {
-    slug: "hepc-detection",
-    title: "A cross dataset meta-model for hepatitis C detection using multi-dimensional pre-clustering",
+    slug: "finrag",
+    title: "FinRAG: Agentic RAG over SEC 10-K filings",
     shortDescription:
-      "Cross data-set meta-model that detects hepatitis C non-invasively",
+      "3-stage retrieval funnel (BM25 + Cohere embed-v3 + Cohere Rerank v3) over ~4,000 financial-document chunks, ~550 ms end-to-end.",
     longDescription:
-      "Built a cross dataset meta-model for hepatitis C detection using multi-dimensional pre-clustering. The model uses a novel multi-dimensional pre-clustering approach in a cross data-set meta-model to detect hepatitis C in the patients non-invasively. We also verify the model's explainability through SHAP and LIME values.",
-    tags: ["Multi-dimensional pre-clustering", "Deep Learning", "Explainability"],
+      "An agentic retrieval system over SEC 10-K filings. Text chunks live in Qdrant for semantic search; canonicalized GAAP line items live in DuckDB sourced from SEC's XBRL Company Facts API for SQL-queryable cross-company analysis. A FastAPI backend serves Pydantic-validated requests with payload-filterable retrieval; a Next.js + TypeScript split-pane UI renders narrative passages and HTML financial tables with click-through to the original filings on SEC.gov.",
+    tags: ["RAG", "Retrieval", "Evaluation", "Financial NLP"],
+    category: "RAG",
+    techStack: [
+      "Python",
+      "TypeScript",
+      "Cohere",
+      "Qdrant",
+      "DuckDB",
+      "FastAPI",
+      "Next.js",
+      "Tailwind",
+    ],
+    githubUrl: "https://github.com/sharma-aryan-1/FinRAG",
+    status: "Active",
+    featured: true,
+    date: "May 2026 to Present",
+    highlights: [
+      "3-stage retrieval funnel (BM25 + Cohere embed-v3 fused via RRF + Cohere Rerank v3 cross-encoder) over ~4,000 chunks; ~550 ms end-to-end.",
+      "Modal-split data architecture: Qdrant for semantic chunks, DuckDB for canonicalized GAAP line items from SEC's XBRL Company Facts API.",
+      "Full-stack interface: payload-filterable retrieval (ticker, fiscal_year, chunk_type) behind FastAPI; live citation viewer in the UI with click-through to SEC.gov.",
+      "Eval-first discipline: CI-ready 8-case smoke harness with per-stage score-floor calibration (cosine, RRF, rerank scales) and persisted JSON results for regression diffing.",
+    ],
+  },
+  {
+    slug: "project-kanto",
+    title: "Project Kanto: Real-life Pokédex",
+    shortDescription:
+      "Offline, real-time mobile species classifier across 10,000 species using a YOLOv8n model fine-tuned on iNaturalist 2021.",
+    longDescription:
+      "A fully offline mobile species classifier built around a YOLOv8n model fine-tuned on iNaturalist 2021 Mini and exported to INT8/float TFLite for on-device inference. Top-1 accuracy is 38% and top-5 is 68% across 10,000 species. The pipeline runs entirely on a background Dart isolate to keep the UI at 60 fps.",
+    tags: ["Computer Vision", "Mobile", "On-device ML", "YOLOv8"],
+    category: "Computer Vision",
+    techStack: [
+      "Dart",
+      "Flutter",
+      "Riverpod",
+      "Isar",
+      "tflite_flutter",
+      "Python",
+      "PyTorch",
+      "YOLOv8",
+      "TFLite",
+      "ONNX",
+    ],
+    githubUrl: "https://github.com/sharma-aryan-1/Project-Kanto",
+    status: "Active",
+    featured: true,
+    date: "Apr 2026 to Present",
+    highlights: [
+      "Cut per-frame ML latency 10× (≈2.0 s to ≈150 ms) on a mid-range device by rearchitecting the pipeline and switching to zero-copy TransferableTypedData across Dart isolate boundaries.",
+      "Diagnosed a silent YOLOv8 preprocessing bug (normalized coords parsed as pixel-space) using a live debug overlay; predictions had collapsed to a single class.",
+      "Replaced naive vote-based temporal smoothing with logit-space probability averaging over a rolling 12-frame buffer to exploit the classifier's high top-5 / unstable top-1 distribution.",
+      "End-to-end mobile inference pipeline in Dart (YUV→RGB, sensor-rotation correction, bilinear crop-resize, invoke, softmax smoothing, top-3 HUD) running on a background isolate.",
+      "Authored the Python training pipeline and trained the production model on an A100 (50 epochs, batch 384, imgsz 224).",
+    ],
+  },
+  {
+    slug: "smartsubs",
+    title: "SmartSubs: Context-Aware Subtitle Engine",
+    shortDescription:
+      "Automated video pipeline that places subtitles on a 6-zone spatial grid to avoid occluding faces and critical action.",
+    longDescription:
+      "An automated video pipeline that computes optimal subtitle placement frame-by-frame using YOLOv8 detections and a strict IoU veto. Outputs frame-accurate .ass subtitle files from standard .srt input, with a 20-pixel safety margin around detected subjects.",
+    tags: ["Computer Vision", "YOLOv8", "Video"],
+    category: "Computer Vision",
+    techStack: ["Python", "OpenCV", "YOLOv8", "PySceneDetect"],
+    githubUrl: "https://github.com/sharma-aryan-1/smart_subs",
+    status: "Shipped",
+    featured: true,
+    date: "Feb 2026 to Present",
+    highlights: [
+      "Dynamically calculates subtitle placement across a 6-zone spatial grid to avoid occluding faces and critical action.",
+      "YOLOv8 object detection with a strict <15% IoU veto threshold builds dynamic cost heatmaps across 1080p frames.",
+      "Temporal aggregation samples every 5th frame, an 80% processing-time reduction, while enforcing subtitle stability within continuous scenes.",
+      "Conversion engine parses .srt and outputs .ass with frame-accurate coordinate tags and a 20-pixel safety margin around detected subjects.",
+    ],
+  },
+  {
+    slug: "hepc-detection",
+    title: "Cross-dataset meta-model for hepatitis C detection",
+    shortDescription:
+      "Multi-dimensional pre-clustering inside a cross-dataset meta-model for non-invasive hepatitis C detection. Published in Scientific Reports (2025).",
+    longDescription:
+      "A cross-dataset meta-model for hepatitis C detection that uses a novel multi-dimensional pre-clustering approach to combine information across heterogeneous clinical datasets. Model explainability is verified through SHAP and LIME for both individual models and the meta-model.",
+    tags: ["Deep Learning", "Healthcare", "Explainability", "Research"],
     category: "Research",
     techStack: [
       "TensorFlow",
       "Keras",
+      "scikit-learn",
       "NumPy",
       "Pandas",
-      "Scikit-learn",
       "SHAP",
       "LIME",
     ],
-    //githubUrl: "https://github.com/alexchen/gnn-rec",
-    paperUrl: "https://doi.org/10.1038/s41598-025-91298-0",
-    image: "/images/publications/hepc-detection.png",
-    featured: true,
-    date: "2025-03",
+    paperUrl: "https://www.nature.com/articles/s41598-025-91298-0",
+    status: "Published",
+    featured: false,
+    date: "Mar 2025",
     highlights: [
-      "Novel multi-dimensional pre-clustering approach in a cross data-set meta-model to detect hepatitis C in the patients non-invasively.",
-      "Verified the model's explainability through SHAP and LIME values for both the individual models and the cross data-set meta-model.",
-      "Achieved 94.82% accuracy on the test set using novel method.",
-      "Accepted in Scientific Reports.",
-    ],
-  },
-  {
-    slug: "smart_subs",
-    title: "Smart Subtitle Placement Engine",
-    shortDescription:
-      "A dynamic caption placement engine for videos with YOLOv8",
-    longDescription:
-        "Developed a dynamic caption placement engine for videos with YOLOv8. The engine uses YOLOv8 + saliency map to detect the objects in the video and then places the caption on empty spaces to avoid blocking the action.",
-      tags: ["Deep Learning", "Computer Vision"],
-    category: "ML/DL",
-    techStack: ["Python", "YOLOv8"],
-    githubUrl: "https://github.com/sharma-aryan-1/smart_subs",
-    //liveUrl: "https://style-transfer-demo.vercel.app",
-    image: "/images/projects/style-transfer.jpg",
-    featured: true,
-    date: "2026-02",
-    highlights: [
-      "Dynamically calculates optimal subtitle placement across a 6-zone spatial grid to prevent the occlusion of faces and critical action.",
-      "Strict <15% Intersection over Union (IoU) veto threshold to create dynamic \"cost heatmaps\" across 1080p video frames.",
-      "Temporal aggregation algorithm achieved 80% reduction in processing time.",
-      "Conversion engine parses standard SRT files to ASS format for seamless integration into video players.",
-    ],
-  },
-  {
-    slug: "InfoFetch-AI",
-    title: "InfoFetch AI",
-    shortDescription:
-      "Production-Ready RAG System with FAISS Vector Database",
-    longDescription:
-      "Built a production-ready RAG System with FAISS Vector Database. The system uses FAISS to store the embeddings of the documents and then uses the embeddings along with clustering to search the documents.",
-    tags: ["RAG", "FAISS", "Document Retrieval", "Clustering"],
-    category: "RAG Systems",
-    techStack: ["Python", "FAISS", "Hugging Face"],
-    githubUrl: "https://github.com/sharma-aryan-1/InfoFetch-AI",
-    image: "/images/projects/InfoFetch-AI.jpg",
-    featured: true,
-    date: "2024-09",
-    highlights: [
-      "Identified optimal k=10 clusters using elbow method and silhouette analysis",
-      "Reduced search space by 8x through k means pre-clustering before FAISS indexing",
-      "Reduced storage requirements by 35% through efficient numpy array indexing in FAISS.",
-      "Achieved <500ms retrieval latency for FAISS vector search across 10K+ document embeddings.",
-    ],
-  },
-  {
-    slug: "prod-img-feat-extract",
-    title: "Product Feature Extraction from E-Commerce Images",
-    shortDescription:
-        "OCR and VQA based Image Feature Extraction Tool for E-Commerce Products",
-      longDescription:
-      "Extract product features such as weight, height, and other details from product page images (e.g., Amazon) using three different pipelines: PaddleOCR with regex, MiniCPM VQA with regex, and Donut VQA with regex",
-    tags: ["LLM", "Hugging Face", "AI model fine-tuning"],
-    category: "AI Models",
-    techStack: [
-      "Python",
-      "PaddleOCR",
-      "MiniCPM",
-      "Donut",
-      "Hugging Face",
-      "PyTorch",
-    ],
-    githubUrl: "https://github.com/sharma-aryan-1/prod-img-feat-extract",
-    //liveUrl: "https://ai-reviewer.dev",
-    image: "/images/projects/prod-img-feat-extract.jpg",
-    featured: true,
-    date: "2023-12",
-    highlights: [
-      "Cross-analyzed the efficacy of an MLLM pipeline to extract entity information from product page images.",
-      "Trained this model on multidimensional text and image input, improving performance against a purely image input by 12%.",
-      "Compared implementations against OCR, Transformer, and Regex-based implementations and observed a 10% improvement in generation time per image.",
+      "Novel multi-dimensional pre-clustering inside a cross-dataset meta-model for non-invasive hepatitis C detection.",
+      "Model explainability verified via SHAP and LIME, at both per-model and meta-model granularity.",
+      "94.82% test-set accuracy under the proposed method.",
+      "Published in Scientific Reports (5-year IF 4.3, 2024).",
     ],
   },
 ];
 
 export const projectCategories = [
   "All",
-  "ML/DL",
-  "AI Models",
+  "RAG",
+  "Computer Vision",
+  "ML / Systems",
   "Research",
-  "RAG Systems",
 ] as const;

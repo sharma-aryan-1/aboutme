@@ -5,8 +5,17 @@ export interface HeroQuote {
 
 export const siteConfig = {
   name: "Aryan Sharma",
-  tagline: "Researching and engineering in AI, ML, and DS",
-  /** Quotes that rotate slowly under the tagline (hero). */
+  /** Short role line under the name. */
+  role: "MS in Computer Science, UC Riverside",
+  /** Hero one-liner under the role. */
+  heroLead:
+    "Specializing in machine learning, large language models, generative AI, and computer vision. Translating applied ML research into systems that perform reliably in production.",
+  /** Long-form role line, used in metadata. */
+  tagline: "Researching and engineering in AI, ML, and Data Science.",
+  subtitle: "MS in Computer Science @ UC Riverside",
+  /** Status pill on the hero. */
+  currently: "Open to Summer 2026 internships in ML and Data Science",
+  /** Quotes that rotate slowly under the hero. */
   heroRotatingLines: [
     {
       quote:
@@ -81,23 +90,22 @@ export const siteConfig = {
       author: "Sonny · I, Robot",
     },
   ] satisfies HeroQuote[],
-  /** One serif lead sentence above the bio paragraphs. */
-  aboutLead:
-    "The best ML work, to me, lives where rigorous methods meet code you trust in production.",
-  subtitle: "MSCS @ UC Riverside",
-  currently: "Looking for summer internship opportunities in AI, ML, and DS",
   researchInterests: [
     "Machine Learning",
     "Agentic AI",
     "Computer Vision",
     "LLM Systems",
+    "RAG",
   ],
   bio: [
-    "I'm a Computer Science graduate student at UC Riverside, where I focus on machine learning and artificial intelligence. My research so far has been on how we can build more efficient and interpretable deep learning systems for non-invasive healthcare applications.",
-    "Before UCR, I did my B. Tech. in Computer Science and Engineering at VIT Vellore. I bring a practical engineering mindset to my research. I believe the best ML work lives at the intersection of rigorous theory and clean, production-ready code.",
-    "When I'm not training models or writing papers, you'll find me building projects, reading research papers, playing chess, or exploring the hiking trails around Riverside.",
+    "I am a Computer Science graduate student at the University of California, Riverside, specializing in machine learning, large language models, generative AI, and computer vision. My focus lies in translating applied ML research into systems that perform reliably in production, bridging rigorous modeling with practical engineering.",
+    "My recent work spans both research and development. I published a paper in Scientific Reports introducing a machine learning meta-model for Hepatitis C detection. I am also building Project Kanto, a Flutter mobile application that classifies 10,000 animal species using a quantized on-device model paired with a local database for fast, offline inference.",
+    "My core interests include retrieval-augmented generation and agentic systems, domains where strong modeling meets real-world constraints. I value the full development lifecycle, from problem framing and pipeline design through to optimization and deployment. Beyond coding, I enjoy hiking and exploring new places.",
+    "I am currently seeking summer 2026 internships in machine learning and data science. I welcome the opportunity to connect with teams and individuals working on challenging problems in AI.",
   ],
   email: "aryan250403@gmail.com",
+  phone: "1-951-830-5938",
+  location: "Riverside, CA",
   github: "https://github.com/sharma-aryan-1",
   linkedin: "https://www.linkedin.com/in/sharmaaryan25/",
   scholar: "https://scholar.google.com/citations?user=gZ4CkwoAAAAJ&hl=en",
@@ -113,34 +121,43 @@ export interface NewsEntry {
 }
 
 export const news: NewsEntry[] = [
-
+  {
+    date: "2026.05",
+    content:
+      "Started FinRAG: agentic retrieval over SEC 10-K filings with a 3-stage funnel and ~550ms end-to-end latency.",
+    link: "https://github.com/sharma-aryan-1/FinRAG",
+    linkText: "GitHub",
+    type: "project",
+  },
+  {
+    date: "2026.04",
+    content:
+      "Building Project Kanto, a fully offline, real-time mobile species classifier across 10,000 species.",
+    link: "https://github.com/sharma-aryan-1/Project-Kanto",
+    linkText: "GitHub",
+    type: "project",
+  },
   {
     date: "2026.02",
-    content: "Built a dynamic caption placement engine for videos with YOLOv8",
+    content: "Built SmartSubs, a dynamic subtitle-placement engine for video using YOLOv8.",
     link: "https://github.com/sharma-aryan-1/smart_subs",
     linkText: "GitHub",
     type: "project",
   },
   {
-    date: "2025.11",
-    content: "Built a prototype vaccine schedule listing web app for a funded college project",
-    link: "https://github.com/sharma-aryan-1/proto-getvax-v1",
-    linkText: "GitHub",
-    type: "project",
-  },
-  {
     date: "2025.09",
-    content: "Started M.S. in Computer Science at UC Riverside.",
+    content: "Started MS in Computer Science at UC Riverside.",
     type: "award",
   },
   {
     date: "2025.06",
-    content: "Finished B. Tech. in Computer Science and Engineering at VIT Vellore.",
+    content: "Finished B.Tech. in Computer Science and Engineering at VIT Vellore (GPA 3.9 / 4).",
     type: "award",
-  },  
+  },
   {
     date: "2025.03",
-    content: "Paper on cross dataset meta-model for hepatitis c detection accepted in Scientific Reports.",
+    content:
+      "Paper on cross-dataset meta-model for hepatitis C detection accepted in Scientific Reports.",
     link: "https://www.nature.com/articles/s41598-025-91298-0",
     linkText: "Paper",
     type: "paper",
