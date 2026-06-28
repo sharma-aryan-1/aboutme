@@ -122,6 +122,14 @@ export interface NewsEntry {
 
 export const news: NewsEntry[] = [
   {
+    date: "2026.06",
+    content:
+      "Shipped FinRAG live: an agentic RAG system over SEC 10-K filings, evaluated to 1.00 exact-match accuracy and deployed as a self-contained image behind cost guardrails.",
+    link: "https://finrag-front.vercel.app/",
+    linkText: "Live demo",
+    type: "project",
+  },
+  {
     date: "2026.05",
     content:
       "Started FinRAG: agentic retrieval over SEC 10-K filings with a 3-stage funnel and ~550ms end-to-end latency.",
