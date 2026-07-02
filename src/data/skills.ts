@@ -36,6 +36,8 @@ export const skillCategories: SkillCategory[] = [
       "Pandas",
       "NumPy",
       "Matplotlib",
+      "Streamlit",
+      "Plotly",
       "BeautifulSoup",
     ],
   },

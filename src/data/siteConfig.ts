@@ -99,7 +99,7 @@ export const siteConfig = {
   ],
   bio: [
     "I am a Computer Science graduate student at the University of California, Riverside, specializing in machine learning, large language models, generative AI, and computer vision. My focus lies in translating applied ML research into systems that perform reliably in production, bridging rigorous modeling with practical engineering.",
-    "My recent work spans both research and development. I published a paper in Scientific Reports introducing a machine learning meta-model for Hepatitis C detection. I am also building Project Kanto, a Flutter mobile application that classifies 10,000 animal species using a quantized on-device model paired with a local database for fast, offline inference.",
+    "My recent work spans both research and development. I published a paper in Scientific Reports introducing a machine learning meta-model for Hepatitis C detection, and I have since shipped several end-to-end systems: FinRAG, an agentic retrieval system over SEC 10-K filings; ClinicalFlow, a FHIR-based EHR pipeline with a data-quality governance layer and cardiovascular cohort analysis; and Project Kanto, a Flutter application that classifies 10,000 animal species using a quantized on-device model for fast, offline inference.",
     "My core interests include retrieval-augmented generation and agentic systems, domains where strong modeling meets real-world constraints. I value the full development lifecycle, from problem framing and pipeline design through to optimization and deployment. Beyond coding, I enjoy hiking and exploring new places.",
     "I am currently seeking summer 2026 internships in machine learning and data science. I welcome the opportunity to connect with teams and individuals working on challenging problems in AI.",
   ],
@@ -121,6 +121,14 @@ export interface NewsEntry {
 }
 
 export const news: NewsEntry[] = [
+  {
+    date: "2026.07",
+    content:
+      "Shipped ClinicalFlow: a reproducible HL7 FHIR R4 to DuckDB pipeline over 3,450 synthetic patients with a 28-check data-governance layer and a cardiovascular cohort analysis, deployed as a live Streamlit dashboard.",
+    link: "https://clinicalflow-fhir-showcase.streamlit.app/",
+    linkText: "Live demo",
+    type: "project",
+  },
   {
     date: "2026.06",
     content:

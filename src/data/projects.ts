@@ -54,6 +54,45 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "clinicalflow",
+    title: "ClinicalFlow: FHIR EHR Pipeline & Cardiovascular Cohort Analysis",
+    shortDescription:
+      "A reproducible HL7 FHIR R4 to DuckDB pipeline over 3,450 synthetic patients with a 28-check data-governance layer and a cardiovascular cohort analysis, shipped as a live Streamlit dashboard.",
+    longDescription:
+      "ClinicalFlow ingests synthetic electronic health records in HL7 FHIR R4 format, normalizes six resource types (Patient, Encounter, Condition, Observation, MedicationRequest, Procedure) into a SQL-queryable DuckDB store, layers a data-governance / quality-assurance suite on top, and then analyzes a cardiovascular cohort for population-health insight. The ingester handles the awkward parts of FHIR head-on: urn:uuid / fullUrl reference resolution, polymorphic value[x], splitting multi-component observations (e.g. blood pressure) into separate rows, coding-system tracking across LOINC/SNOMED/RxNorm, and mixed date normalization. A configurable 1% error-budget contract drives 28 automated checks (referential integrity, code-system validation, value-range, completeness, temporal sanity, and duplicates), written to both a machine-readable qa_results table and a compliance-style Markdown report. The cohort layer first discovers the condition codes actually present in the data, then defines the cardiovascular cohort and reports prevalence, a comorbidity co-occurrence matrix, medication-class patterns, and a BP-at-or-above-140/90 population-health flag. Everything is reproducible from raw bundles to reports with one command (fixed Synthea seed, pinned dependencies), covered by pytest, and surfaced through a seven-section Streamlit dashboard deployed live on Streamlit Community Cloud, backed by a slim committed database so the demo runs without the 160 MB full store. Synthetic data only, no PHI.",
+    tags: [
+      "Healthcare",
+      "FHIR / HL7",
+      "Data Engineering",
+      "Data Quality",
+      "Population Health",
+    ],
+    category: "ML / Systems",
+    techStack: [
+      "Python",
+      "DuckDB",
+      "pandas",
+      "Streamlit",
+      "Plotly",
+      "Synthea",
+      "pytest",
+      "SQL",
+    ],
+    githubUrl: "https://github.com/sharma-aryan-1/clinicalflow",
+    liveUrl: "https://clinicalflow-fhir-showcase.streamlit.app/",
+    status: "Shipped",
+    featured: true,
+    date: "Jul 2026",
+    highlights: [
+      "Ingested 3,450 synthetic patients (~3.8M rows, 2.7M observations) from HL7 FHIR R4 bundles into six normalized DuckDB tables, resolving urn:uuid references, polymorphic value[x], and multi-component observations.",
+      "Built a data-governance layer of 28 automated checks under a configurable 1% error-budget contract (referential integrity, LOINC/SNOMED/RxNorm validation, value-range, missingness, temporal, duplicates) with machine- and human-readable reports.",
+      "The QA contract caught two real ingestion defects: ~33% of medication requests carried no inline RxNorm code (medicationReference) and ~24% of observations were survey panels with dropped valueCodeableConcept components. Both were fixed, taking the suite to 28/28 passing.",
+      "Defined a cardiovascular cohort (1,215 of 3,450 patients, 35.2%) and analyzed prevalence, a comorbidity co-occurrence matrix, and treatment patterns (90.6% on antihypertensives, 60.2% on statins).",
+      "Shipped a seven-section interactive Streamlit dashboard deployed live on Streamlit Community Cloud, backed by a slim committed DuckDB so the demo runs without the 160 MB full store.",
+      "Fully reproducible: fixed Synthea seed, pinned dependencies, a one-command pipeline (ingest to QA to cohort to reports), and a pytest suite over a hand-checked FHIR fixture; synthetic data only, no PHI.",
+    ],
+  },
+  {
     slug: "project-kanto",
     title: "Project Kanto: Real-life Pokédex",
     shortDescription:
