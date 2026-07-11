@@ -124,6 +124,14 @@ export const news: NewsEntry[] = [
   {
     date: "2026.07",
     content:
+      "Shipped StreamSearch: real-time semantic search over a streaming corpus — documents flow through Kafka and Spark Structured Streaming into Cassandra and Qdrant, served as hybrid BM25 + dense retrieval behind a live demo.",
+    link: "https://huggingface.co/spaces/sharmaaryan/streamsearch",
+    linkText: "Live demo",
+    type: "project",
+  },
+  {
+    date: "2026.07",
+    content:
       "Shipped ClinicalFlow: a reproducible HL7 FHIR R4 to DuckDB pipeline over 3,450 synthetic patients with a 28-check data-governance layer and a cardiovascular cohort analysis, deployed as a live Streamlit dashboard.",
     link: "https://clinicalflow-fhir-showcase.streamlit.app/",
     linkText: "Live demo",
