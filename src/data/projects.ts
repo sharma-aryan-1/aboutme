@@ -54,6 +54,47 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "streamsearch",
+    title: "StreamSearch: Real-Time Semantic Search over a Streaming Corpus",
+    shortDescription:
+      "A real-time semantic search platform streaming documents through Kafka and Spark Structured Streaming into Cassandra and Qdrant, served as hybrid BM25 + dense retrieval behind a live demo.",
+    longDescription:
+      "StreamSearch continuously indexes a document stream for semantic search. Records are produced to a Kafka (Redpanda) topic and consumed by a Spark Structured Streaming job that embeds each micro-batch once (all-MiniLM-L6-v2, 384-dim), writing metadata to Cassandra and vectors to Qdrant so the searchable index grows as documents arrive. Search fuses lexical BM25 and dense vector retrieval with Reciprocal Rank Fusion (k=60) over a shared Python core reused by both the streaming consumer and the query path. It ships as two tiers: a self-contained live demo (baked vector index, never empty, deployed on Hugging Face Spaces) and a proof tier that runs the real Kafka to Spark to Cassandra and Qdrant pipeline via Docker Compose, captured on video. Delivery is at-least-once with checkpointed offsets and idempotent, id-keyed writes so replays are safe, and the exact Spark-Kafka connector is pre-warmed into the Ivy cache for reproducible container builds.",
+    tags: [
+      "Streaming",
+      "Data Engineering",
+      "Retrieval",
+      "Kafka / Spark",
+      "Vector Search",
+    ],
+    category: "ML / Systems",
+    techStack: [
+      "Python",
+      "Apache Spark",
+      "Apache Kafka",
+      "Redpanda",
+      "Cassandra",
+      "Qdrant",
+      "sentence-transformers",
+      "FastAPI",
+      "Streamlit",
+      "Docker",
+    ],
+    githubUrl: "https://github.com/sharma-aryan-1/streamsearch",
+    liveUrl: "https://huggingface.co/spaces/sharmaaryan/streamsearch",
+    status: "Shipped",
+    featured: true,
+    date: "Jul 2026",
+    highlights: [
+      "Streaming ingestion via Spark Structured Streaming over a Kafka (Redpanda) topic, embedding each micro-batch once in a foreachBatch handler (not a per-row UDF) and upserting 384-dim MiniLM vectors to Qdrant with metadata to Cassandra.",
+      "Hybrid retrieval fusing BM25 and dense vector search with Reciprocal Rank Fusion (k=60), surfacing documents that either stage alone would miss.",
+      "At-least-once delivery with checkpointed Kafka offsets and idempotent, id-keyed Cassandra/Qdrant writes, so replays and restarts never duplicate or corrupt the index.",
+      "Two-tier design: a self-contained live demo (baked index, always-on on Hugging Face Spaces) plus a proof tier running the full Kafka to Spark to Cassandra to Qdrant stack via Docker Compose.",
+      "Reproducible containerized build: matched the exact Spark-Kafka connector version into a pre-warmed Ivy cache with pinned dependencies, and a shared embedding/search core reused by both the streaming consumer and the query path.",
+      "Reproducible 3,000-document arXiv corpus, a 17-test suite, and a recorded end-to-end pipeline walkthrough.",
+    ],
+  },
+  {
     slug: "clinicalflow",
     title: "ClinicalFlow: FHIR EHR Pipeline & Cardiovascular Cohort Analysis",
     shortDescription:
